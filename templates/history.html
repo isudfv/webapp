@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block script %}
+    <script>
+
+        alert('fuck')
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    {#    <ul class="list-group">#}
+    {#        <li class="list-group-item">An item</li>#}
+    {#        <li class="list-group-item">A second item</li>#}
+    {#        <li class="list-group-item">A third item</li>#}
+    {#        <li class="list-group-item">A fourth item</li>#}
+    {#        <li class="list-group-item">And a fifth one</li>#}
+    {#    </ul>#}
+    <div class="container" style="height: 30px">
+        <div class="">
+            {% for goods in list %}
+                <li class="list-group-item">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col align-self-start">
+                                {{ goods.name }}
+                            </div>
+                            <div class="col align-self-center">
+                                价格: {{ goods.price }} 元
+                            </div>
+{#                            <div class="col align-self-end">#}
+{#                                <a href="/remove/{{ loop.index0 }}">#}
+{#                                    <button class="btn btn-light">移除</button>#}
+{#                                </a>#}
+{#                            </div>#}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+
+
+        </div>
+    </div>
+
+{% endblock %}
