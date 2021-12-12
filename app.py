@@ -46,6 +46,7 @@ def login():
     if login_form.validate_on_submit():
         username = login_form.username.data
         passwd = login_form.passwd.data
+        # 从数据库查询用户
         if findUser(username):
             user = User(username)
         else:
@@ -54,6 +55,7 @@ def login():
         if passwd != user.passwd:
             flash('密码错误')
             return redirect(url_for('login'))
+        # 用flask-login管理用户登录
         login_user(user)
 
         return redirect(url_for('commodity'))
@@ -68,6 +70,7 @@ def register():
         passwd = register_form.passwd.data
         repasswd = register_form.repasswd.data
 
+        # 从数据库查询用户
         if findUser(username):
             flash('用户已存在')
             return redirect(url_for('register'))
@@ -78,6 +81,7 @@ def register():
         addUser(username, passwd)
         session['trolley'] = []
         session['bought'] = []
+        flash("注册成功")
         return redirect(url_for('login'))
     return render_template('register.html', form=register_form)
 
@@ -94,14 +98,10 @@ def commodity():
     add_commodity_form = ObjectForm()
     if add_commodity_form.validate_on_submit():
         filename = add_commodity_form.file_upload.data.filename
-        # path =f"./media/images/{filename}"
+        # 保存路径为/static/image
         path = os.path.join('static', 'image', filename)
-        # path = os.path.join(app.config['UPLOAD_FOLDER'])
-        # userinfo_form.gravatar.data = path
-        # print(filename)
-        print(path)
         add_commodity_form.file_upload.data.save(path)
-        # modifyUserInfo(userid, {"gravatar": filename})
+        # 向数据库中添加数据
         addGoods(add_commodity_form.name.data, add_commodity_form.description.data, add_commodity_form.price.data, filename)
         return redirect(url_for('commodity'))
     return render_template('commodity.html', form_list=commodity_list, form=add_commodity_form)
@@ -161,11 +161,12 @@ def buy():
         if bought is None:
             session['bought'] = []
             bought = []
+        # 清空购物车, 添加购买记录
         this_buy = session['trolley']
         bought += this_buy
         session['trolley'] = []
         session['bought'] = bought
-
+        # 发送邮件
         user_email = buy_form.email.data
         message = Message("您已购买", sender=app.config["MAIL_USERNAME"], recipients=[user_email])
         message.body = '\n'.join([f"商品: {v['name']}"for v in this_buy])

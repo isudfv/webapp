@@ -3,7 +3,6 @@ import psycopg2.extras
 import hashlib
 from postgres import *
 
-# conn = psycopg2.connect("dbname=book-bargain  user=postgres password=postgres")
 conn = psycopg2.connect("dbname=shop host=159.75.122.61 user=postgres password=grespost")
 
 salt = b'abcdef01'
@@ -18,14 +17,10 @@ class User(UserMixin):
 
     @staticmethod
     def get(username):
-        # print('here')
-        # print(userid)
         return User(username)
 
     def get_id(self):
         return self.name
-    # @property
-    # def is_authenticated(self):
 
 
 # def hashedPwd(password):
