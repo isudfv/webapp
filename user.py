@@ -3,7 +3,7 @@ import psycopg2.extras
 import hashlib
 from postgres import *
 
-conn = psycopg2.connect("dbname=shop host=159.75.122.61 user=postgres password=grespost")
+conn = psycopg2.connect("dbname=shop port=32532 host=159.75.122.61 user=postgres password=FSDfSdcsdfs2134AD")
 
 salt = b'abcdef01'
 
